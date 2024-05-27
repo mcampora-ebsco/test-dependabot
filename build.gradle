@@ -43,7 +43,7 @@ sonarqube {
 
 dependencies {
   // forced vulnerability
-  implementation('com.amazon.redshift:redshift-jdbc42:2.1.0.27') // contains a critical vulnerability
+  implementation('com.amazon.redshift:redshift-jdbc42:2.1.0.28') // contains a critical vulnerability
   //implementation('com.amazon.redshift:redshift-jdbc42:2.1.0.28') // contains a critical vulnerability
 
   implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
