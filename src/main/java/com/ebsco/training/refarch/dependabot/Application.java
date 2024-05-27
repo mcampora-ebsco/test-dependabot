@@ -10,6 +10,11 @@ import lombok.extern.log4j.Log4j2;
 @EnableScheduling
 @Log4j2
 public class Application {
+    // secrets hardcoded in code to test GH secrets detection
+    String americanExpress = "378282246310005";
+    String visa = "4111111111111111";
+    String password = "password";
+    String token = "AKCp8ogq20EEZH5Gs7f83RSLPTB6npMoau2NZEKhKh5uNid4CNdBPaQe4RkWymobAkkcCcd9KB";
 
     public static void main(String[] args) {
         log.info("Starting up dependabot application...");
