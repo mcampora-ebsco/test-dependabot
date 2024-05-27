@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: training.refarch.dependabot
+  main:
+    banner-mode: "off"
+
+application:
+  team: _cookiecutter_team_
+  market: refarch
+  domain: training

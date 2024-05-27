@@ -1,0 +1,16 @@
+# Valid values lookup: https://github.com/EBSCOIS/platform.infrastructure.medusa-data-validator/blob/master/medusa_data_validator/application_metadata.yaml
+---
+Application:
+  Name  : public-dependabot
+  Market: refarch
+  Domain: training
+  Team  : ea
+  Art   : off-art
+  ProductLine: shared
+Pipeline:
+  Archetype: java-spring-boot-microservice-experimental-v3
+  Catalog: experimental
+  JavaVersion: '17'
+  GradleVersion: '8'
+  AddOns:
+    - apiFirst

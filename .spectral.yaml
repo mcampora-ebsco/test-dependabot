@@ -1,0 +1,5 @@
+
+formats:
+  - oas3
+extends:
+  - http://eis-openapi-spectral-rules.ss.eislz.com/latest-0/ruleset.yaml

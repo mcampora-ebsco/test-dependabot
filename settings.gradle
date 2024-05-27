@@ -1,0 +1,21 @@
+pluginManagement {
+  repositories {
+    mavenLocal()
+    maven {
+      url 'https://eis.jfrog.io/eis/plugins-release'
+      credentials {
+        username = artifactory_user
+        password = artifactory_password
+      }
+    }
+    maven {
+      url 'https://eis.jfrog.io/eis/libs-release'
+      credentials {
+        username = artifactory_user
+        password = artifactory_password
+      }
+    }
+  }
+}
+
+

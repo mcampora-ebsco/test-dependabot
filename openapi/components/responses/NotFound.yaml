@@ -1,0 +1,15 @@
+description: Faction could not be parsed
+content:
+  application/json:
+    schema:
+      $ref: '#/components/schemas/ErrorResponse'
+    examples:
+      response:
+        $ref: '#/components/examples/ErrorResponse'
+x-eis-exception:
+  - name: MethodArgumentTypeMismatchException
+    message: Failed to convert value to required type.
+    package: org.springframework.web.method.annotation
+  - name: InvalidParameterException
+    message: Missing AuthPayload.
+    package: com.ebsco.platform.shared.common.exception

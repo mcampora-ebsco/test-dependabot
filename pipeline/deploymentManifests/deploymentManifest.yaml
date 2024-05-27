@@ -1,0 +1,65 @@
+DeploymentStrategy:
+  Timeout: 2h
+  
+  ServiceDependencies:
+    microservices: []
+    egress: []
+
+  MinimumSamples:
+    quantity: 100
+    
+  # This section will override ANY setting in the Validation section
+  # http://platformkb.ss.eislz.com/ref15/users-guide/custom-stage-validation/#example-of-custom-implementation
+  ServiceHealthChecks:
+  ## Required minimum PQL checks. This MUST always be present or the pipeline will fail
+    - type: pql
+      name: errorRate
+    - type: pql
+      name: performanceThreshold
+      args:
+        responseTimeMillisecondThreshold: 50
+  ## Mandatory Synthetics for RDA Art
+    - type: synthetics-test-group
+      name: Researcher Core Tests
+
+  AutoscalingPolicy:
+    MinReplicas: 2
+    MaxReplicas: 4
+    TargetCpuUtilization: 80
+
+  ServiceHealth:
+    ReadinessProbe:
+      InitialDelaySeconds: 30
+      PeriodSeconds: 5
+      TimeoutSeconds: 1
+      Port: 8081
+      HealthEndpoint: /admin/health
+    LivenessProbe:
+      InitialDelaySeconds: 30 # Must be greater than app startup time
+      PeriodSeconds: 5
+      TimeoutSeconds: 1
+      Port: 8081
+      HealthEndpoint: /admin/health
+
+  Stages:
+  - Type: Canary
+    Duration: 10m
+    Weight: 30
+
+  - Type: Canary
+    Duration: 10m
+    Weight: 70
+
+  MetricsEndpoint:
+    MetricsPath: /admin/prometheus
+    MetricsPort: 8081
+
+# Default resources are documented here: https://github.com/EBSCOIS/platform.infrastructure.hydra/wiki/Deployment-Manifest#full-resources-policy-block-example
+# If service is slow or crashing/restarting, see: https://github.com/EBSCOIS/platform.training.refarch1.5-devguide/blob/master/guides/Troubleshooting_Guide.md#service-is-slow-or-crashingrestarting-while-running-a-performance-or-load-test
+  Resources:
+    Limits:
+      Memory: 330Mi
+      CPU: 450m
+    Requests:
+      Memory: 330Mi
+      CPU: 50m

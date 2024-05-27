@@ -1,0 +1,13 @@
+# This file defines the service dependencies which you need stubbed out during perf testing.
+# File uses outdated contract tests and is required for pipeline build.
+# It consists of a map of ServiceDependencies. Each service dependency is defined with the data needed to run the stub. 
+# The pipeline is responsible for pulling and running the stubs, and will provide the URL for each stub via an environment variable named `${EnvHostVar}`
+
+ServiceDependencies: []
+  # - ServiceName: your-service-dependency
+  #   Domain: dependency-domain
+  #   Market: dependency-market
+  #   EnvHostVar: YOUR_SERVICE_DEPENDENCY
+  #   Stub:
+  #     ImageTag: latest-1
+  #     StubPerConsumer: true

@@ -1,0 +1,9 @@
+# This file defines the service dependencies which you can stub for integration tests.
+#Please refer to confluence for details: https://ebscoinddev.atlassian.net/l/cp/6J6AtpS0
+
+services: []
+#  - name: dependency-service-name
+#    domain: dependency-service-domain
+#    market: dependency-service-market
+#    port: port-to-be-used
+#    mockServer: stub-type

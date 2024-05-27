@@ -1,0 +1,125 @@
+openapi: 3.0.3
+info:
+  title: dependabot
+  description: Example JSB service for RA1.5 with OpenAPI generator
+  contact:
+    name: ea
+    url: 'https://github.com/EBSCOIS/training.refarch.dependabot'
+    email: TeamEmail@ebsco.com
+  version: Latest
+servers:
+  - url: 'http://dependabot.e1-dev.eks.ehost-devqa.eislz.com:80'
+    description: Inferred Url
+  - url: 'http://dependabot.e1-live.eks.ehost-live.eislz.com:80'
+    description: ''
+tags:
+  - name: V0TFormers
+    description: Transformers Controller
+paths:
+  '/v0/transformers/{transformerFaction}':
+    x-eis-wip: true
+    get:
+      summary: Returns a list of transformers from the specified faction
+      operationId: v0_get_transformers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                response:
+                  value:
+                    - Bumblebee
+                    - Optimus Prime
+        '400':
+          $ref: '#/components/responses/NotFound'
+      description: Returns list of transformers from the specified faction
+      tags:
+        - V0TFormers
+      parameters:
+        - name: sorted
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Return results sorted alphabetically
+    parameters:
+      - schema:
+          $ref: '#/components/schemas/transformerFaction'
+        name: transformerFaction
+        in: path
+        required: true
+        description: Which side are you on?
+  '/v0/transformers/{transformerFaction}/{transformerName}':
+    x-eis-wip: true
+    post:
+      summary: Register a new transformer with the specified faction
+      operationId: v0_post_transformers
+      responses:
+        '201':
+          description: CREATED
+        '400':
+          $ref: '#/components/responses/NotFound'
+      description: Enhance the Transformers lore
+      tags:
+        - V0TFormers
+    delete:
+      summary: Remove transformer from the given faction
+      operationId: v0_delete_transformer
+      responses:
+        '204':
+          description: NO CONTENT
+        '400':
+          $ref: '#/components/responses/NotFound'
+      description: Enhance the Transformers lore
+      tags:
+        - V0TFormers
+    parameters:
+      - schema:
+          $ref: '#/components/schemas/transformerFaction'
+        name: transformerFaction
+        in: path
+        required: true
+        description: Which side are you on?
+      - schema:
+          type: string
+        name: transformerName
+        in: path
+        required: true
+        description: Name of transformer
+  /v1/external-object:
+    $ref: ./paths/v1.external-object.yaml
+components:
+  schemas:
+    transformerFaction:
+      $ref: ./components/schemas/transformerFaction.yaml
+    ErrorResponse:
+      $ref: 'http://eis-openapi-schema.ss.eislz.com/models/responses/ErrorResponse.v1.yaml'
+    SessionInitiationUrl:
+      $ref: 'http://eis-openapi-spec.ss.eislz.com/access-api/latest/api-spec.yaml#/components/schemas/V2SessionInitiationUrl'
+  examples:
+    ErrorResponse:
+      $ref: ./components/examples/ErrorResponse.yaml
+    SessionInitiationUrl:
+      $ref: ./components/examples/SessionInitiationUrl.yaml
+  responses:
+    NotFound:
+      description: Faction could not be parsed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            response:
+              $ref: '#/components/examples/ErrorResponse'
+      x-eis-exception:
+        - name: MethodArgumentTypeMismatchException
+          message: Failed to convert value to required type.
+          package: org.springframework.web.method.annotation
+        - name: InvalidParameterException
+          message: Missing AuthPayload.
+          package: com.ebsco.platform.shared.common.exception

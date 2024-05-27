@@ -1,0 +1,17 @@
+x-eis-wip: true
+get:
+  summary: Returns an object referenced from an external API spec
+  operationId: v1_get_external
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../api-spec-index.yaml#/components/schemas/SessionInitiationUrl'
+          examples:
+            response:
+              $ref: '../api-spec-index.yaml#/components/examples/SessionInitiationUrl'
+  description: Returns a referenced object
+  tags:
+    - V0TFormers

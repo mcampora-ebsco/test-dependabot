@@ -1,0 +1,10 @@
+value:
+  debugId: string
+  details:
+    - field: string
+      issue: string
+      location: string
+      value: string
+  informationLink: string
+  message: string
+  name: string

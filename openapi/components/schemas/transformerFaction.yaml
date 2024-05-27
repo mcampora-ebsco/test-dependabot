@@ -1,0 +1,5 @@
+description: 'Transformer Faction'
+type: string
+enum:
+  - AUTOBOTS
+  - DECEPTICONS

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="60" packages="com.ebsco">
+    <Appenders>
+        <Console name="Console-Appender" target="SYSTEM_OUT">
+            <EbscoJsonLayout logFullStackTrace="${env:LOG_FULL_STACK_TRACE:-false}"/>
+            <Filters>
+                <ThrottlingFilter upperLevel="WARN" lowerLevel="OFF" cap="100" millis="60000"/>
+                <ThrottlingFilter upperLevel="ALL" lowerLevel="INFO" cap="50" millis="60000"/>
+            </Filters>
+        </Console>
+        <Jaeger name="Jaeger-Appender" span="ACTIVE">
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Jaeger>
+    </Appenders>
+    <DynamicThresholdFilter key="X-EIS-DIAGNOSTIC-LEVEL" onMatch="ACCEPT" onMismatch="NEUTRAL">
+        <KeyValuePair key="FATAL" value="FATAL"/>
+        <KeyValuePair key="ERROR" value="ERROR"/>
+        <KeyValuePair key="INFO" value="INFO"/>
+        <KeyValuePair key="DEBUG" value="DEBUG"/>
+        <KeyValuePair key="TRACE" value="TRACE"/>
+    </DynamicThresholdFilter>
+    <Loggers>
+        <Logger name="com.ebsco" level="${env:LOG_LEVEL:-WARN}" additivity="false">
+            <AppenderRef ref="Console-Appender"/>
+            <AppenderRef ref="Jaeger-Appender"/>
+        </Logger>
+        <Root level="${env:LOG_LEVEL:-WARN}">
+            <AppenderRef ref="Console-Appender"/>
+        </Root>
+    </Loggers>
+</Configuration>
