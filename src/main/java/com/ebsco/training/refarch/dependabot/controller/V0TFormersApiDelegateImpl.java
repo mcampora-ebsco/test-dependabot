@@ -1,7 +1,7 @@
 package com.ebsco.training.refarch.dependabot.controller;
 
-import com.ebsco.training.refarch.public_dependabot.api.V0TFormersApiDelegate;
-import com.ebsco.training.refarch.public_dependabot.model.TransformerFaction;
+import com.ebsco.training.refarch.test_dependabot.api.V0TFormersApiDelegate;
+import com.ebsco.training.refarch.test_dependabot.model.TransformerFaction;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

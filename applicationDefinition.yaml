@@ -1,7 +1,7 @@
 # Valid values lookup: https://github.com/EBSCOIS/platform.infrastructure.medusa-data-validator/blob/master/medusa_data_validator/application_metadata.yaml
 ---
 Application:
-  Name  : public-dependabot
+  Name  : test-dependabot
   Market: refarch
   Domain: training
   Team  : ea

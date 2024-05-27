@@ -1,6 +1,6 @@
 package com.ebsco.training.refarch.dependabot.controller;
 
-import com.ebsco.training.refarch.dependabot.model.TransformerFaction;
+import com.ebsco.training.refarch.test_dependabot.model.TransformerFaction;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.actuate.observability.AutoConfigureObservability;
 import org.springframework.http.HttpStatus;
