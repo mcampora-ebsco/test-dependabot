@@ -33,6 +33,10 @@ jobs:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
         queries: security-extended
+    - uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '21'
     - if: matrix.build-mode == 'manual'
       shell: bash
       env: 
@@ -40,7 +44,7 @@ jobs:
         ORG_GRADLE_PROJECT_artifactory_password: ${{ secrets.artifactory_password }}
         ORG_GRADLE_PROJECT_artifactory_contextUrl: ${{ secrets.artifactory_contextUrl }}
       run: |
-        ./gradlew clean build
+        ./gradlew --no-daemon clean build
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
       with:
