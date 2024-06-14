@@ -35,6 +35,10 @@ jobs:
         queries: security-extended
     - if: matrix.build-mode == 'manual'
       shell: bash
+      env: 
+        ORG_GRADLE_PROJECT_artifactory_user: ${{ secrets.artifactory_user }}
+        ORG_GRADLE_PROJECT_artifactory_password: ${{ secrets.artifactory_password }}
+        ORG_GRADLE_PROJECT_artifactory_contextUrl: ${{ secrets.artifactory_contextUrl }}
       run: |
         ./gradlew clean build
     - name: Perform CodeQL Analysis
