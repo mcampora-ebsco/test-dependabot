@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
@@ -46,10 +47,21 @@ public class V0TFormersApiDelegateImpl implements V0TFormersApiDelegate {
         return ResponseEntity.of(Optional.of(transformersToReturn));
     }
 
+    public static @interface UntrustedData { }
+
+    @UntrustedData
+    public static String getUserData() {
+        return "test";
+    }
+
     @Override
     public ResponseEntity<Void> v0PostTransformers(TransformerFaction transformerFaction, String transformerName) throws Exception {
         if (transformerName.matches("(.)*solve/challenges/server-side(.)*")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        Method m = V0TFormersApiDelegateImpl.class.getMethod("getUserData");
+        if(m.isAnnotationPresent(UntrustedData.class)) {  // Returns 'false'
+            System.out.println("Not trusting data from user.");
         }
         transformers.get(transformerFaction).add(transformerName);
         return ResponseEntity.status(HttpStatus.CREATED).build();

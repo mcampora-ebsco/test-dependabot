@@ -32,7 +32,8 @@ jobs:
       with:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
-        queries: security-extended
+        #queries: security-extended
+        queries: security-and-quality
     - uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
