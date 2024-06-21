@@ -38,13 +38,13 @@ dependencies {
   implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: "${springDocVersion}"
 
   // forced vulnerability
-  implementation('com.amazon.redshift:redshift-jdbc42:2.1.0.28') // contains a critical vulnerability
-  //implementation('com.amazon.redshift:redshift-jdbc42:2.1.0.28') // contains a critical vulnerability
+  implementation('com.amazon.redshift:redshift-jdbc42:2.1.0.27') // contains a critical vulnerability
+  //implementation('com.amazon.redshift:redshift-jdbc42:2.1.0.28') // fix a critical vulnerability
 
   // force a transitive dependency to use a more recent version
-  constraints {
-    implementation('org.json:json:20231013')
-  }
+  //constraints {
+    //implementation('org.json:json:20231013')
+  //}
 
   // Compile or test dependencies
   compileOnly group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
