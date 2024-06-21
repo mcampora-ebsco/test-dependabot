@@ -3,31 +3,65 @@ plugins {
   id "com.ebsco.openapi.jsb" version '3.+'
 }
 
-tasks.e2eTestJarAll {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
 ext {
-  // PDK version
+  // Runtime dependencies
   pdkVersion = '3.+'
+  amazonAWSJavaSDKVersion = '1.12.+'  // com.ebsco:platform.libraries.java is forcing 1.12.745 anyway
+  springBootVersion = '3.0.+'         // com.ebsco:platform.libraries.java is forcing 3.1.+ anyway
+  springDocVersion = '2+'             // we can lower this one, do we have a vulnerable version?
+  guavaVersion = '32.1.2-jre'         // com.ebsco:platform.libraries.java is asking for 32.1.1-jre
+  commonLang3Version = '3.13.+'       // com.ebsco:platform.libraries.java is asking for 3.13.0, org.springdoc and org.springframework.boot are asking for 3.12.0
 
-  // Compile dependency versions
-  amazonAWSJavaSDKVersion = '1.12.+' // com.ebsco:platform.libraries.java is forcing 1.12.715 anyway
+  // Compile and Test dependencies
   lombokVersion = '1.18.+' // compile only
-  springBootVersion = '3.1.+' // com.ebsco:platform.libraries.java is forcing 3.1.11 anyway
-  springDocVersion = '2+' // we can lower this one, do we have a vulnerable version?
-  //springDocVersion = '2.2.0'
-  guavaVersion = '32.1.2-jre' // com.ebsco:platform.libraries.java is asking for 32.1.1-jre
-  commonLang3Version = '3.13.+' // com.ebsco:platform.libraries.java is asking for 3.13.0, org.springdoc and org.springframework.boot are asking for 3.12.0
-
-// add another dependency with a vulnerable version
-
-  // Test dependency versions
   commonJunitLibVersion = '4.+'
   junitJupiterVersion = '5.10.+'
   junitPlatformVersion = '1.10.+'
   mockitoJunitJupiterVersion = '5.5.+'
   restAssuredVersion = '5.+'
+}
+
+dependencies {
+  // EBSCO Ref Arch 1.5 PDK
+  implementation group: 'com.ebsco', name: 'platform.libraries.java', version: "${pdkVersion}"
+
+  // Useless direct depedencies as they are pulled by the PDK)
+  //implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+  //implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+  //implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+  //implementation group: 'org.springframework.data', name: 'spring-data-commons'
+  //implementation platform("com.amazonaws:aws-java-sdk-bom:${amazonAWSJavaSDKVersion}")
+  //implementation group: 'com.google.guava', name: 'guava', version: "${guavaVersion}"
+  //implementation group: 'org.apache.commons', name: 'commons-lang3', version: "${commonLang3Version}"
+
+  // not pulled by the PDK
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: "${springDocVersion}"
+
+  // forced vulnerability
+  implementation('com.amazon.redshift:redshift-jdbc42:2.1.0.27') // contains a critical vulnerability
+  //implementation('com.amazon.redshift:redshift-jdbc42:2.1.0.28') // fix the vulnerability
+
+  // force a transitive dependency to use a more recent version
+  constraints {
+    implementation('org.json:json:20231013')
+  }
+
+  // Compile or test dependencies
+  compileOnly group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
+  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
+  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: "${springBootVersion}"
+  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: "${junitJupiterVersion}"
+  testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: "${mockitoJunitJupiterVersion}"
+  testImplementation group: 'io.rest-assured', name: 'rest-assured', version: "${restAssuredVersion}"
+  testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: "${junitJupiterVersion}"
+  testRuntime group: 'org.junit.platform', name: 'junit-platform-commons', version: "${junitPlatformVersion}"
+  testImplementation group: 'com.ebsco', name: 'platform.shared.junit-jsb-library', version: "${commonJunitLibVersion}"
+  e2eTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
+  e2eTestCompileOnly group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
+}
+
+tasks.e2eTestJarAll {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 sonarqube {
@@ -39,53 +73,6 @@ sonarqube {
                                     generated/src/**
                                  """
   }
-}
-
-dependencies {
-  // forced vulnerability
-  implementation('com.amazon.redshift:redshift-jdbc42:2.1.0.27') // contains a critical vulnerability
-  //implementation('com.amazon.redshift:redshift-jdbc42:2.1.0.28') // contains a critical vulnerability
-
-  // force a transitive dependency to use a more recent version
-  constraints {
-    implementation('org.json:json:20231013')
-  }
-
-  implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
-  implementation platform("com.amazonaws:aws-java-sdk-bom:${amazonAWSJavaSDKVersion}")
-
-  // EBSCO Ref Arch 1.5 PDK
-  implementation group: 'com.ebsco', name: 'platform.libraries.java', version: "${pdkVersion}"
-
-  // Spring Boot
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-  implementation group: 'org.springframework.data', name: 'spring-data-commons'
-
-  // Lombok
-  compileOnly group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
-  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
-
-  // Swagger dependencies
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: "${springDocVersion}"
-  implementation group: 'com.google.guava', name: 'guava', version: "${guavaVersion}"
-
-  implementation group: 'org.apache.commons', name: 'commons-lang3', version: "${commonLang3Version}"
-
-  // Tests
-  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: "${springBootVersion}"
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: "${junitJupiterVersion}"
-  testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: "${mockitoJunitJupiterVersion}"
-  testImplementation group: 'io.rest-assured', name: 'rest-assured', version: "${restAssuredVersion}"
-
-  testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: "${junitJupiterVersion}"
-  testRuntime group: 'org.junit.platform', name: 'junit-platform-commons', version: "${junitPlatformVersion}"
-
-  testImplementation group: 'com.ebsco', name: 'platform.shared.junit-jsb-library', version: "${commonJunitLibVersion}"
-
-  // e2e test
-  e2eTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
-  e2eTestCompileOnly group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
 }
 
 contracts {
