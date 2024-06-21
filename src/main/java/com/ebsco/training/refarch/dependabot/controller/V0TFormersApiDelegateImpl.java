@@ -48,7 +48,9 @@ public class V0TFormersApiDelegateImpl implements V0TFormersApiDelegate {
 
     @Override
     public ResponseEntity<Void> v0PostTransformers(TransformerFaction transformerFaction, String transformerName) throws Exception {
-        boolean match = transformerName.matches("(.)*solve/challenges/server-side(.)*");
+        if (transformerName.matches("(.)*solve/challenges/server-side(.)*")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
         transformers.get(transformerFaction).add(transformerName);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
