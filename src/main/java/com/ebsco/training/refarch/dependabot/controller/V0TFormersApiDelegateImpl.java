@@ -46,16 +46,6 @@ public class V0TFormersApiDelegateImpl implements V0TFormersApiDelegate {
         return ResponseEntity.of(Optional.of(transformersToReturn));
     }
 
-    public void faulty() {
-        // array index out of bound
-        int sum = 0;
-        int[] a = {1, 2, 3};
-        for (int i = 0; i <= a.length; i++) { // BAD
-            sum += a[i];
-        }
-        System.out.println(sum);
-    }
-
     @Override
     public ResponseEntity<Void> v0PostTransformers(TransformerFaction transformerFaction, String transformerName) throws Exception {
         // complex regexp, can allow DDOS attack
@@ -63,6 +53,14 @@ public class V0TFormersApiDelegateImpl implements V0TFormersApiDelegate {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         
+        // array index out of bound
+        int sum = 0;
+        int[] a = {1, 2, 3};
+        for (int i = 0; i <= a.length; i++) { // BAD
+            sum += a[i];
+        }
+        System.out.println(sum);
+
         transformers.get(transformerFaction).add(transformerName);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
